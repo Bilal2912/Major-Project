@@ -10,15 +10,25 @@ import VideoModal from './VideoModal'
 const ModuleList = (props) => {
   const { courses } = props;
   console.log(courses);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    if (!document.getElementById("dropdown").classList.contains("rotate-180")) {
-      document.getElementById("dropdown").classList.add("rotate-180");
+  const opencourses = Array(courses.length).fill(false);
+  const [open, setOpen] = React.useState(opencourses);
+  const handleOpen = (i) => {
+    const drop = "dropdown" + i;
+    if (!document.getElementById(drop).classList.contains("rotate-180")) {
+      document.getElementById(drop).classList.add("rotate-180");
     } else {
-      document.getElementById("dropdown").classList.remove("rotate-180");
+      document.getElementById(drop).classList.remove("rotate-180");
     }
-    setOpen(!open);
+    let arr = [...open];
+    arr[i] = !arr[i];
+    setOpen(arr);
+    // console.log(drop , arr);
   };
+  useEffect(() => {
+    console.log(open);
+  } , [open])
+
+
   const openVideo = () => {
     if (document.getElementById("defaultModal").classList.contains("hidden")) {
       document.getElementById("defaultModal").classList.remove("hidden");
@@ -30,7 +40,7 @@ const ModuleList = (props) => {
       // document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
     }
   };
-  const openQuiz = () => {
+  const openQuiz = (i) => {
     if (document.getElementById("defaultModal1").classList.contains("hidden")) {
       document.getElementById("defaultModal1").classList.remove("hidden");
       document.getElementById("defaultModal1").classList.add("bg-black");
@@ -41,10 +51,10 @@ const ModuleList = (props) => {
       // document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
     }
   };
-  //   const [openQuiz, setOpenQuiz] = React.useState(false);
-  //   const handleOpenQuiz = () => {
-  //     setOpenQuiz(!openQuiz);
-  //   };
+    // const [openQuiz, setOpenQuiz] = React.useState(false);
+    // const handleOpenQuiz = () => {
+    //   setOpenQuiz(!openQuiz);
+    // };
   return (
     <>
       {courses.length > 0 ? (
@@ -71,11 +81,11 @@ const ModuleList = (props) => {
                       </div>
                     </div>
                   </div>
-                  <button onClick={handleOpen} id="dropdown">
+                  <button onClick={() => {handleOpen(i)}} id= {"dropdown" + i } >
                     <ArrowDropDownIcon fontSize="large" />
                   </button>
                 </div>
-                {open ? (
+                {open[i] ? (
                   <div className=" mt-5" id="ext_drop_0">
                     {item.Videos.noOfVideos > 0 ? (
                       item.Videos.videoLinks.map((videos, j) => {
@@ -87,7 +97,7 @@ const ModuleList = (props) => {
                               <span
                                 data-modal-target="defaultModal"
                                 data-modal-toggle="defaultModal"
-                                className="text-xl ml-2 hover:cursor-pointer hover:text-white"
+                                className="text-xl ml-2 hover:cursor-pointer hover:text-white "
                                 onClick={openVideo}
                               >
                                 Play Video
@@ -103,14 +113,14 @@ const ModuleList = (props) => {
                     <div className="border-t-2 border-black flex items-center py-3 justify-between">
                       <div className="flex items-center">
                         <AttachmentIcon className="" />
-                        <span className="text-xl ml-1">1 Quiz </span>
+                        <span className="text-xl ml-1"> {} Quiz </span>
                       </div>
                       <div>
                         <button
                           class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-xl"
                           data-modal-target="defaultModal1"
                           data-modal-toggle="defaultModal1"
-                          onClick={openQuiz}
+                          onClick={() => {openQuiz(i)}}
                         >
                           Attempt Now
                         </button>
@@ -133,7 +143,7 @@ const ModuleList = (props) => {
                                 type="button"
                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                 data-modal-hide="defaultModal"
-                                onClick={openQuiz}
+                                onClick={()=>{openQuiz(i)}}
                               >
                                 <svg
                                   aria-hidden="true"
