@@ -71,7 +71,7 @@ exports.getAllCoursesWithoutFilter = catchAsyncErrors(
 );
 
 // Get Single Course Details
-exports.getCourseDetails = catchAsyncErrors(async (req, res) => {
+exports.getCourseDetails = catchAsyncErrors(async (req, res, next) => {
   const course = await Course.findById(req.params.id);
   if (!course) {
     return next(new ErrorHandler("Course not found", 500));
@@ -259,9 +259,11 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
 exports.createModule = catchAsyncErrors(async (req, res, next) => {
     
   const {name} = req.body;
+  const quizData = {};
 
   const module = {
-    name
+    name,
+    quizData,
   };
 
   const course = await Course.findById(req.params.id);
@@ -308,7 +310,6 @@ exports.updateModule = catchAsyncErrors(async (req, res, next) => {
   const {name} = req.body;
 
   const module = {
-    user: req.user._id,
     name
   };
 
@@ -663,18 +664,19 @@ exports.createQuiz = catchAsyncErrors(async (req, res, next) => {
   }  
 
   const quiz = {
-    level
+    level: level
   }
-
+  
   if(i!=course.modules.length){
     course.modules[i].quizData = quiz;
+    console.log(course.modules[i]);
   }
 
   await course.save({validateBeforeSave:false})
 
   res.status(200).json({
     success: true,
-    quiz
+    course
   });
 });
 

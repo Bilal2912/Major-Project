@@ -20,9 +20,11 @@ app.use(fileUpload());
 // Route Imports
 const course = require("./routes/courseRoute");
 const user = require("./routes/userRoute");
+const modules = require("./routes/moduleRoute");
 
 app.use("/api/v1", course);
 app.use("/api/v1", user);
+app.use("/api/v1", modules);
 
 // Middleware for errors
 app.use(errorMiddleware)

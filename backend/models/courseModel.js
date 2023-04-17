@@ -153,9 +153,6 @@ const courseSchema = mongoose.Schema({
   //     },
   //   },
   // ],
-  modules:{
-    type: Array
-  },
   courseDuration: {
     type: Number,
     default: 0,
