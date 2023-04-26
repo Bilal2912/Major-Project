@@ -21,10 +21,12 @@ app.use(fileUpload());
 const course = require("./routes/courseRoute");
 const user = require("./routes/userRoute");
 const modules = require("./routes/moduleRoute");
+const quiz = require("./routes/quizRoute");
 
 app.use("/api/v1", course);
 app.use("/api/v1", user);
 app.use("/api/v1", modules);
+app.use("/api/v1", quiz);
 
 // Middleware for errors
 app.use(errorMiddleware)

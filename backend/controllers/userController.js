@@ -154,7 +154,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
 // Get User Detail -- User
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).populate('enrolledIn.course')
 
   res.status(200).json({
     success: true,
@@ -306,7 +306,7 @@ exports.enrolledInCourse = catchAsyncErrors(async (req, res, next) => {
 
   let flag = false;
 
-  await user.enrolledIn.forEach((e) => {
+  user.enrolledIn.forEach((e) => {
     if (e.course.toString() === course._id.toString()) {
       flag = true;
       return res.status(400).json({ success: false });
