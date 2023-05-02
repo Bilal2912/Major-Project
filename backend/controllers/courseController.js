@@ -5,6 +5,7 @@ const ApiFeatures = require("../utils/apifeatures");
 const fs = require("fs");
 const { response } = require("../app");
 const User = require("../models/userModel");
+const Module = require("../models/moduleModel");
 const cloudinary = require("cloudinary");
 
 // Create Course
@@ -28,6 +29,15 @@ exports.createCourse = catchAsyncErrors(async (req, res, next) => {
   res.status(201).json({
     success: true,
     course,
+  });
+});
+
+// Get Modules of a Course
+exports.getModulesOfCourse = catchAsyncErrors(async (req, res, next) => {
+  const modules = await Module.find({courseId: req.params.id})
+  res.status(201).json({
+    success: true,
+    modules,
   });
 });
 

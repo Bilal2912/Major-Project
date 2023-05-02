@@ -28,6 +28,7 @@ const {
   deleteQuiz,
   updateQuiz,
   getQuiz,
+  getModulesOfCourse,
 } = require("../controllers/courseController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 // const upload = require("../middleware/video");
@@ -56,6 +57,7 @@ router
   .get(isAuthenticatedUser, authorizeRoles("admin", "prof"), getCourseReviews);
 
 router.route("/reviews").delete(isAuthenticatedUser, deleteReview);
+router.route("/getModulesOfCourse/:id").get(isAuthenticatedUser, getModulesOfCourse);
 
 // router.route("/adminNprof/videos/:id").get(isAuthenticatedUser, authorizeRoles("admin", "prof"), getCourseVideos);
 
