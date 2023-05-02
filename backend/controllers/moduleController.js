@@ -10,25 +10,25 @@ const cloudinary = require("cloudinary");
 
 // Create Module
 exports.createModule = catchAsyncErrors(async (req, res, next) => {
-    const {name} = req.body;
+    const {moduleArray} = req.body
+    // const {name} = req.body;
   
     const course = await Course.findById(req.params.id);
     
     if (!course) {
       return next(new ErrorHandler("Course not found", 404));
     }
-  
-    const module = {
-        courseId: req.params.id,
-        name: name,
+    for (let i = 0; i < moduleArray.length; i++) {
+      const module = moduleArray[i];
+      module.courseId = req.params.id
     }
-    
-    const obj = new Module(module)
-    await obj.save();
+    const createdModules = await Module.insertMany(moduleArray)
+    // const obj = new Module(module)
+    // await obj.save();
   
     res.status(200).json({
       success: true,
-      obj
+      createdModules
     });
 });
 

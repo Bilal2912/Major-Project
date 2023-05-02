@@ -55,10 +55,10 @@ const moduleSchema = new mongoose.Schema({
         ],
       },
     ],
+    score: {
+      type: Number,
+    }
   },
-  score: {
-    type: Number,
-  }
 });
 
 module.exports = mongoose.model("Quiz", moduleSchema);
