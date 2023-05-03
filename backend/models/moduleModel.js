@@ -30,6 +30,9 @@ const moduleSchema = new mongoose.Schema({
     numberOfQuestions: {
       type: Number,
     },
+    timeLimit: {
+      type: Number,
+    },
     qna: [
       {
         qType:{
