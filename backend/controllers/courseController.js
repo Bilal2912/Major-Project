@@ -44,7 +44,7 @@ exports.getModulesOfCourse = catchAsyncErrors(async (req, res, next) => {
 // Get All Courses With Filter
 exports.getAllCourses = catchAsyncErrors(async (req, res, next) => {
   // return next(new ErrorHandler("This is Temp Error",500));
-  const resultPerPage = 6;
+  const resultPerPage = 8;
   const courseCount = await Course.countDocuments();
 
   const apiFeature = new ApiFeatures(Course.find(), req.query)
