@@ -360,6 +360,7 @@ export const userCreatedCourseReducer = (state = {}, action) => {
       return {
         loading: false,
         createdCourses: action.payload.courses,
+        filteredCoursesCount: action.payload.filteredCoursesCount,
       };
     case USER_CREATED_COURSE_FAIL:
       return {
