@@ -154,7 +154,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
 // Get User Detail -- User
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id).populate('enrolledIn.course')
+  const user = await User.findById(req.user.id).populate(['enrolledIn.course', 'courses.course'])
 
   res.status(200).json({
     success: true,
