@@ -16,6 +16,8 @@ exports.createUserQuizData = catchAsyncErrors(async (req, res, next) => {
     const moduleId = req.query.moduleId
     const quizData = {
         level: req.body.level,
+        numberOfQuestions: req.body.numberOfQuestions,
+        timeLimit: req.body.timeLimit,
         qna: req.body.qna,
         score: req.body.score
     }
