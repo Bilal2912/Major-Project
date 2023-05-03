@@ -6,6 +6,8 @@ const Course = require("../models/courseModel");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
+const ApiFeatures = require("../utils/apifeatures");
+
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -155,10 +157,28 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 // Get User Detail -- User
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id).populate(['enrolledIn.course', 'courses.course'])
+  const resultPerPage = 8;
+  const courseCount = user.courses.length;
+
+  const apiFeature = new ApiFeatures(Course.find({user: user._id}), req.query)
+    .search()
+    .filter();
+
+  let courses = await apiFeature.query;
+
+  let filteredCoursesCount = courses.length;
+
+  apiFeature.pagination(resultPerPage);
+
+  courses = await apiFeature.query.clone();
 
   res.status(200).json({
     success: true,
     user,
+    courses,
+    filteredCoursesCount,
+    courseCount,
+    resultPerPage
   });
 });
 
