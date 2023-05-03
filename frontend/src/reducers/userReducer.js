@@ -46,6 +46,9 @@ import {
   CREATED_COURSE_SUCCESS,
   CREATED_COURSE_FAIL,
   CREATED_COURSE_RESET,
+  USER_CREATED_COURSE_REQUEST,
+  USER_CREATED_COURSE_FAIL,
+  USER_CREATED_COURSE_SUCCESS,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -335,6 +338,33 @@ export const createdCourseReducer = (state = {}, action) => {
       return {
         ...state,
         isCourseCreated: false,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const userCreatedCourseReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_CREATED_COURSE_REQUEST:
+      return {
+        loading: true,
+        createdCourses: []
+      };
+    case USER_CREATED_COURSE_SUCCESS:
+      return {
+        loading: false,
+        createdCourses: action.payload.courses,
+      };
+    case USER_CREATED_COURSE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       };
     case CLEAR_ERRORS:
       return {

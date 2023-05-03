@@ -42,6 +42,9 @@ import {
   CREATED_COURSE_SUCCESS,
   CREATED_COURSE_FAIL,
   CREATED_COURSE_RESET,
+  USER_CREATED_COURSE_REQUEST,
+  USER_CREATED_COURSE_FAIL,
+  USER_CREATED_COURSE_SUCCESS,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -286,6 +289,32 @@ export const createdCourse = () => async (dispatch) => {
   }
 };
 
+export const getUserCreatedCourses =
+  (keyword = "", currentPage = 1, category, ratings = 0) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: USER_CREATED_COURSE_REQUEST });
+
+      let link = `/api/v1/courses?keyword=${keyword}&page=${currentPage}&courseRating[gte]=${ratings}`;
+
+      if (category) {
+        link = `/api/v1/courses?keyword=${keyword}&page=${currentPage}&courseCategory=${category}&courseRating[gte]=${ratings}`;
+      }
+
+      const { data } = await axios.get(link);
+      // console.log(data);
+
+      dispatch({
+        type: USER_CREATED_COURSE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: USER_CREATED_COURSE_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // Clearing Errors
 export const clearErrors = () => async (dispatch) => {
