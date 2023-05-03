@@ -57,7 +57,7 @@ router
   .get(isAuthenticatedUser, authorizeRoles("admin", "prof"), getCourseReviews);
 
 router.route("/reviews").delete(isAuthenticatedUser, deleteReview);
-router.route("/getModulesOfCourse/:id").get(isAuthenticatedUser, getModulesOfCourse);
+router.route("/getModulesOfCourse/:id").get(getModulesOfCourse);
 
 // router.route("/adminNprof/videos/:id").get(isAuthenticatedUser, authorizeRoles("admin", "prof"), getCourseVideos);
 
