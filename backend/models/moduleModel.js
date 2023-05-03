@@ -27,6 +27,9 @@ const moduleSchema = new mongoose.Schema({
     level: {
       type: Number,
     },
+    numberOfQuestions: {
+      type: Number,
+    },
     qna: [
       {
         qType:{
@@ -52,6 +55,9 @@ const moduleSchema = new mongoose.Schema({
       },
     ],
   },
+  notes:{
+    type: String,
+  }
 });
 
 module.exports = mongoose.model("Module", moduleSchema);
