@@ -346,7 +346,8 @@ export const createModuleReducer = (state = {}, action) => {
     case CREATE_MODULE_SUCCESS:
       return {
         loading: false,
-        isModuleCreated: action.payload,
+        isModuleCreated: true,
+        data: action.payload
       };
 
     case CREATE_MODULE_FAIL:
