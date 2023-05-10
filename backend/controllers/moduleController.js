@@ -32,6 +32,17 @@ exports.createModule = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+// Get Modules Of Course
+exports.getModulesOfCourse = catchAsyncErrors(async (req, res, next) => {
+  
+  const modules = await Module.find({courseId: req.params.id})
+
+  res.status(200).json({
+    success: true,
+    modules
+  });
+});
+
 // Update Module
 exports.updateModule = catchAsyncErrors(async (req, res, next) => {
     

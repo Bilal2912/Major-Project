@@ -603,7 +603,7 @@ exports.registerCourse = catchAsyncErrors(async (req, res, next) => {
   await course.enrolled.forEach((e) => {
     if (e.user.toString() === req.user._id.toString()) {
       flag = true;
-      return res.status(400).json({ message: "Already Registered" });
+      return res.status(200).json({ success: false, message: "Already Registered" });
     }
   });
 
