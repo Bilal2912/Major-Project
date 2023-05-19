@@ -1,10 +1,12 @@
 const express = require("express");
-const { createModule, updateModule, deleteModule, uploadVideo, deleteVideo, updateVideo, createQuiz, updateQuiz, getQuiz, deleteQuiz, createQuestion, updateQuestion, deleteQuestion, getAllQuestion, getSingleQuestion } = require("../controllers/moduleController");
+const { createModule, updateModule, deleteModule, uploadVideo, deleteVideo, updateVideo, createQuiz, updateQuiz, getQuiz, deleteQuiz, createQuestion, updateQuestion, deleteQuestion, getAllQuestion, getSingleQuestion, getModulesOfCourse } = require("../controllers/moduleController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();
 
 router.route("/adminNprof/modules/new/:id").post(isAuthenticatedUser, authorizeRoles("admin", "prof"), createModule);
+
+router.route("/adminNprof/modules/getModulesOfCourse/:id").get(isAuthenticatedUser, authorizeRoles("admin", "prof"), getModulesOfCourse);
 
 router.route("/adminNprof/videos/new/:id").post(isAuthenticatedUser, authorizeRoles("admin", "prof"), uploadVideo);
 
