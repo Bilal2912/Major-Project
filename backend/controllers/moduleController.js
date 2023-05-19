@@ -8,70 +8,71 @@ const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 
-// Create Module
+// Create Module and Quiz Data
 exports.createModule = catchAsyncErrors(async (req, res, next) => {
-    const {moduleArray} = req.body
-    // const {name} = req.body;
-  
-    const course = await Course.findById(req.params.id);
-    
-    if (!course) {
-      return next(new ErrorHandler("Course not found", 404));
-    }
-    for (let i = 0; i < moduleArray.length; i++) {
-      const module = moduleArray[i];
-      module.courseId = req.params.id
-    }
-    const createdModules = await Module.insertMany(moduleArray)
-    // const obj = new Module(module)
-    // await obj.save();
-  
-    res.status(200).json({
-      success: true,
-      createdModules
-    });
+  const { moduleArray } = req.body;
+  // const {name} = req.body;
+
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return next(new ErrorHandler("Course not found", 404));
+  }
+  for (let i = 0; i < moduleArray.length; i++) {
+    const module = moduleArray[i];
+    module.courseId = req.params.id;
+  }
+  const createdModules = await Module.insertMany(moduleArray);
+  // const obj = new Module(module)
+  // await obj.save();
+
+  res.status(200).json({
+    success: true,
+    createdModules,
+  });
 });
 
 // Get Modules Of Course
 exports.getModulesOfCourse = catchAsyncErrors(async (req, res, next) => {
-  
-  const modules = await Module.find({courseId: req.params.id})
+  const modules = await Module.find({ courseId: req.params.id });
 
   res.status(200).json({
     success: true,
-    modules
+    modules,
   });
 });
 
-// Update Module
+// Update Module and Quiz Data - Not Correct
 exports.updateModule = catchAsyncErrors(async (req, res, next) => {
-    
-  const {name} = req.body;
+  const { moduleArray } = req.body;
+  // const {name} = req.body;
+  let existingModules = await Module.find({ courseId: req.params.id });
+  const course = await Course.findById(req.params.id);
 
-  const module = {
-    name
-  };
-
-  const newData = await Module.findOneAndUpdate({_id:req.params.id}, module, {new:true})
-
+  if (!course) {
+    return next(new ErrorHandler("Course not found", 404));
+  }
+  console.log(existingModules)
+  // existingModules = moduleArray;
+  // console.log(existingModules)
+  // await existingModules.save()
   res.status(200).json({
     success: true,
-    newData
+    existingModules,
   });
 });
 
 // Delete Module
 exports.deleteModule = catchAsyncErrors(async (req, res, next) => {
-    
-  const {name} = req.body;
+  const { name } = req.body;
 
   const course = await Course.findById(req.params.id);
-  
+
   if (!course) {
     return next(new ErrorHandler("Course not found", 404));
   }
 
-  await Module.findOneAndDelete({_id:req.params.id})
+  await Module.findOneAndDelete({ _id: req.params.id });
 
   res.status(200).json({
     success: true,
@@ -80,14 +81,14 @@ exports.deleteModule = catchAsyncErrors(async (req, res, next) => {
 
 // Upload Video
 exports.uploadVideo = catchAsyncErrors(async (req, res, next) => {
-  const { title, url} = req.body;
+  const { title, url } = req.body;
 
   const video = {
     title,
     url,
   };
-  
-  const vidData = await Module.findOne({_id:req.params.id})
+
+  const vidData = await Module.findOne({ _id: req.params.id });
 
   vidData.videos.push(video);
 
@@ -95,7 +96,7 @@ exports.uploadVideo = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    vidData
+    vidData,
   });
 });
 
@@ -103,23 +104,23 @@ exports.uploadVideo = catchAsyncErrors(async (req, res, next) => {
 exports.deleteVideo = catchAsyncErrors(async (req, res, next) => {
   const { videoName } = req.body;
 
-  const module = await Module.findOne({_id:req.params.id});
+  const module = await Module.findOne({ _id: req.params.id });
 
   let i = 0;
   for (; i < module.videos.length; i++) {
-    if(module.videos[i].title === videoName){
+    if (module.videos[i].title === videoName) {
       break;
-    } 
+    }
   }
-  if(i!=module.videos.length){
-    module.videos.splice(i,1);
+  if (i != module.videos.length) {
+    module.videos.splice(i, 1);
   }
 
   await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
@@ -129,210 +130,205 @@ exports.updateVideo = catchAsyncErrors(async (req, res, next) => {
 
   const video = {
     title,
-    url
+    url,
   };
 
-  const module = await Module.findOne({_id:req.params.id})
+  const module = await Module.findOne({ _id: req.params.id });
 
   let i = 0;
   for (; i < module.videos.length; i++) {
-    if(module.videos[i].title === videoName){
+    if (module.videos[i].title === videoName) {
       break;
-    } 
+    }
   }
-  if(i!=module.videos.length){
-    module.videos.splice(i,1);
-    module.videos.splice(i,0,video);
+  if (i != module.videos.length) {
+    module.videos.splice(i, 1);
+    module.videos.splice(i, 0, video);
   }
 
   await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
 // Create Quiz
 exports.createQuiz = catchAsyncErrors(async (req, res, next) => {
-  
-  const module = await Module.findOne({_id:req.params.id})
+  const module = await Module.findOne({ _id: req.params.id });
 
-  const {level} = req.body;
+  const { level } = req.body;
 
   const quiz = {
-    level: level
-  }
-  
+    level: level,
+  };
+
   module.quizData = quiz;
 
-  await module.save({validateBeforeSave:false})
+  await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
 // Update Quiz
 exports.updateQuiz = catchAsyncErrors(async (req, res, next) => {
-  
-  const module = await Module.findOne({_id:req.params.id})
+  const module = await Module.findOne({ _id: req.params.id });
 
-  const {level} = req.body;
+  const { level } = req.body;
 
   const quiz = {
-    level
-  }
+    level,
+  };
 
   module.quizData = quiz;
 
-  await module.save({validateBeforeSave:false})
+  await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
 // Get Quiz
 exports.getQuiz = catchAsyncErrors(async (req, res, next) => {
+  const module = await Module.findOne({ _id: req.params.id });
 
-  const module = await Module.findOne({_id:req.params.id})
-
-  const obj = module.quizData
+  const obj = module.quizData;
 
   res.status(200).json({
     success: true,
-    obj
+    obj,
   });
 });
 
 // Delete Quiz
 exports.deleteQuiz = catchAsyncErrors(async (req, res, next) => {
-  
-  const module = await Module.findOne({_id:req.params.id})
+  const module = await Module.findOne({ _id: req.params.id });
 
   module.quizData = {};
 
-  await module.save({validateBeforeSave:false})
+  await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
 // Create Question
 exports.createQuestion = catchAsyncErrors(async (req, res, next) => {
-  const {qType, question, questionImgUrl, options} = req.body;
+  const { qType, question, questionImgUrl, options } = req.body;
 
-  const module = await Module.findOne({_id:req.params.id})
-  
+  const module = await Module.findOne({ _id: req.params.id });
+
   const questionData = {
     qType,
     question,
     questionImgUrl,
     options,
-  }
-  module.quizData.qna.push(questionData)
+  };
+  module.quizData.qna.push(questionData);
 
-  await module.save({validateBeforeSave:false})
+  await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
 // Update Question
 exports.updateQuestion = catchAsyncErrors(async (req, res, next) => {
+  const { qType, question, questionImgUrl, options } = req.body;
 
-  const {qType, question, questionImgUrl, options} = req.body;
+  const module = await Module.findOne({ _id: req.params.id });
 
-  const module = await Module.findOne({_id:req.params.id})
-  
   const questionData = {
     qType,
     question,
     questionImgUrl,
     options,
-  }
+  };
 
   let arr = module.quizData.qna;
 
   let j = 0;
   for (; j < arr.length; j++) {
-    if(arr[j]._id.toString() === req.query.qId.toString()){
+    if (arr[j]._id.toString() === req.query.qId.toString()) {
       break;
-    }  
+    }
   }
-  if(j!=arr.length){
-    module.quizData.qna.splice(j,1);
-    module.quizData.qna.splice(j,0,questionData);
+  if (j != arr.length) {
+    module.quizData.qna.splice(j, 1);
+    module.quizData.qna.splice(j, 0, questionData);
   }
 
-  await module.save({validateBeforeSave:false})
+  await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
 // Delete Question
 exports.deleteQuestion = catchAsyncErrors(async (req, res, next) => {
-  const module = await Module.findOne({_id:req.params.id})
-  
+  const module = await Module.findOne({ _id: req.params.id });
+
   let arr = module.quizData.qna;
 
   let j = 0;
   for (; j < arr.length; j++) {
-    if(arr[j]._id.toString() === req.query.qId.toString()){
+    if (arr[j]._id.toString() === req.query.qId.toString()) {
       break;
-    }  
+    }
   }
-  if(j!=arr.length){
-    module.quizData.qna.splice(j,1);
+  if (j != arr.length) {
+    module.quizData.qna.splice(j, 1);
   }
 
-  await module.save({validateBeforeSave:false})
+  await module.save({ validateBeforeSave: false });
 
   res.status(200).json({
     success: true,
-    module
+    module,
   });
 });
 
 // Get All Questions
 exports.getAllQuestion = catchAsyncErrors(async (req, res, next) => {
-  const module = await Module.findOne({_id:req.params.id})
-  
+  const module = await Module.findOne({ _id: req.params.id });
+
   let arr = module.quizData.qna;
 
   res.status(200).json({
     success: true,
-    arr
+    arr,
   });
 });
 
 // Get Single Question
 exports.getSingleQuestion = catchAsyncErrors(async (req, res, next) => {
-  const module = await Module.findOne({_id:req.params.id})
-  
+  const module = await Module.findOne({ _id: req.params.id });
+
   let arr = module.quizData.qna;
 
   let j = 0;
   for (; j < arr.length; j++) {
-    if(arr[j]._id.toString() === req.query.qId.toString()){
+    if (arr[j]._id.toString() === req.query.qId.toString()) {
       break;
-    }  
+    }
   }
 
   const question = arr[j];
 
   res.status(200).json({
     success: true,
-    question
+    question,
   });
 });
