@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 
 const Video_Input = props => {
   const { videodata, setVideoData, index } = props;
+  console.log(props)
   const handleInputChange = (e, type, index) => {
     let data = {...videodata};
     switch (type) {
@@ -37,8 +38,8 @@ const Video_Input = props => {
               <Input
                 name={'video_link_' + index}
                 // type="email"
-                input={videodata.title}
-                onChange={e => {
+                value={videodata.title}
+                onChange={(e) => {
                   handleInputChange(e, 'title', index);
                 }}
               />
@@ -50,8 +51,8 @@ const Video_Input = props => {
               <Input
                 name={'video_link_' + index}
                 // type="email"
-                input={videodata.url}
-                onChange={e => {
+                value={videodata.url}
+                onChange={(e) => {
                   handleInputChange(e, 'link', index);
                 }}
               />
