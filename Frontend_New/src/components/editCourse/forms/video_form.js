@@ -20,6 +20,7 @@ const Video_Form = props => {
   useEffect(() => {
     let data = {...preset_data};
     data.courses[currentModule].videos[index] = videos;
+    delete data.courses[currentModule].videos[index]._id;
     setPresetData(data);
     // console.log(data);
   }, [videos]);

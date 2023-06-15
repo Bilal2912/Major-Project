@@ -51,7 +51,7 @@ const Syllabus = (props) => {
             <AccordionPanel pb={4}>
               <Accordion allowToggle>
                 {ele.videos.map(item => (
-                  <HStack>
+                  <HStack alignItems={'baseline'}>
                   <AccordionItem w = {'90%'}>
                     <h2>
                       <AccordionButton>
@@ -71,7 +71,7 @@ const Syllabus = (props) => {
                       </AspectRatio>
                     </AccordionPanel>
                   </AccordionItem>
-                  <IconButton icon = {<Download/>}/>
+                  <IconButton colorScheme='blue' size={'sm'} icon = {<Download/>} onClick={ () => { window.open(item.notes ,"_blank") }} />
                   </HStack>
                 ))}
               </Accordion>

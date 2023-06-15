@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   Modal,
+  Center,
   ModalOverlay,
   ModalContent,
   ModalHeader,
@@ -33,11 +34,6 @@ const Step2 = props => {
   const [modulearr, setModuleArr] = useState([]);
   const [currentModule, setCurrentModule] = useState(0);
   const { isCreated , course } = useSelector((state) => state.createCourse);
-  const [allModules, setAllModules] = useState(preset_data.courses);
-  const [moduledata, setModuleData] = useState(
-    allModules[currentModule].moduledata
-  );
-  console.log(preset_data.courses);
   return (
     <>
     <Heading paddingBottom={'10px'} size = {'sm'} >{course?.courseName}</Heading>
@@ -56,8 +52,19 @@ const Step2 = props => {
                   variant={currentModule === index ? 'filled' : 'elevated'}
                 >
                   <CardBody>
-                    <Text>{ele?.name}</Text>
-                  </CardBody>
+										<Center>
+											<HStack>
+												<Text>{ele?.name}</Text>
+												<IconButton
+													icon={<Trash />}
+													onClick={async () => {
+                            let temp = { ...preset_data };
+														temp.courses.splice(index, 1);
+                              setPresetData(temp)
+													}}></IconButton>
+											</HStack>
+										</Center>
+									</CardBody>
                 </Card>
               </Box>
             ))}
@@ -103,11 +110,8 @@ const Step2 = props => {
             <Divider size={'5px'} orientation="vertical" />
             <Module_Edit
               numberofModules={numberofModules}
-              allModules={allModules}
-              setAllModules={setAllModules}
               currentModule={currentModule}
-              moduledata={moduledata}
-              setModuleData={setModuleData}
+  
               preset_data={preset_data}
               setPresetData={setPresetData}
             />

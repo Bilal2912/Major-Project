@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 
 const Video_Input = props => {
   const { videodata, setVideoData, index } = props;
-  console.log(props)
   const handleInputChange = (e, type, index) => {
     let data = {...videodata};
     switch (type) {
@@ -21,6 +20,9 @@ const Video_Input = props => {
         break;
       case 'link':
         data.url = e.target.value;
+        break;
+      case 'notes':
+        data.notes = e.target.value;
         break;
       default:
         console.log(e.target.value);
@@ -54,6 +56,19 @@ const Video_Input = props => {
                 value={videodata.url}
                 onChange={(e) => {
                   handleInputChange(e, 'link', index);
+                }}
+              />
+            </FormControl>
+          </GridItem>
+          <GridItem colSpan={2}>
+          <FormControl isRequired>
+              <FormLabel>Notes Link </FormLabel>
+              <Input
+                name={'video_notes_link_' + index}
+                // type="email"
+                value={videodata.notes}
+                onChange={(e) => {
+                  handleInputChange(e, 'notes', index);
                 }}
               />
             </FormControl>

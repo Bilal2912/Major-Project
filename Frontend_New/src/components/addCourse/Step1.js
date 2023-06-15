@@ -60,7 +60,7 @@ const Step1 = (props) => {
 		myForm.set("courseName", coursedetails.courseName);
 		myForm.set("courseDescription", coursedetails.courseDescription);
 		myForm.set("courseCategory", coursedetails.courseCategory);
-		await dispatch(updateCourse(myForm, tvid));
+		await dispatch(createCourse(myForm));
 		setTabIndex(1);
 	};
 

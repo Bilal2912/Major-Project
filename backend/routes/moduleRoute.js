@@ -15,9 +15,9 @@ router.route("/adminNprof/videos/update/:id").put(isAuthenticatedUser, authorize
 router.route("/adminNprof/videos/delete/:id").delete(isAuthenticatedUser, authorizeRoles("admin", "prof"), deleteVideo);
 // // imgUpload,
 
-router.route("/adminNprof/modules/delete/:id").delete(isAuthenticatedUser, authorizeRoles("admin", "prof"), deleteModule)
+router.route("/adminNprof/modules/delete/:id").delete( deleteModule)
 
-router.route("/adminNprof/modules/update/:id").put(isAuthenticatedUser, authorizeRoles("admin", "prof"), updateModule)
+router.route("/adminNprof/modules/update/:id").put(updateModule)
 
 router.route("/adminNprof/modules/createQuiz/:id").post(isAuthenticatedUser, authorizeRoles("admin", "prof"), createQuiz)
 
