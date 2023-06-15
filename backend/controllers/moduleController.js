@@ -44,33 +44,25 @@ exports.getModulesOfCourse = catchAsyncErrors(async (req, res, next) => {
 
 // Update Module and Quiz Data - Not Correct
 exports.updateModule = catchAsyncErrors(async (req, res, next) => {
-  const { moduleArray } = req.body;
-  // const {name} = req.body;
-  let existingModules = await Module.find({ courseId: req.params.id });
-  const course = await Course.findById(req.params.id);
-
-  if (!course) {
-    return next(new ErrorHandler("Course not found", 404));
+  const module = await Module.findOne({_id: req.params.id})
+  if (!module) {
+    return next(new ErrorHandler("Module not found", 500));
   }
-  console.log(existingModules)
-  // existingModules = moduleArray;
-  // console.log(existingModules)
-  // await existingModules.save()
+  const {moduleData} = req.body
+
+  const newModule = await Module.findByIdAndUpdate(req.params.id, moduleData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  })
   res.status(200).json({
     success: true,
-    existingModules,
+    newModule
   });
 });
 
 // Delete Module
 exports.deleteModule = catchAsyncErrors(async (req, res, next) => {
-  const { name } = req.body;
-
-  const course = await Course.findById(req.params.id);
-
-  if (!course) {
-    return next(new ErrorHandler("Course not found", 404));
-  }
 
   await Module.findOneAndDelete({ _id: req.params.id });
 

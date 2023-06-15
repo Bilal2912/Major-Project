@@ -21,6 +21,9 @@ const moduleSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      notes:{
+        type: String,
+      }
     },
   ],
   quizData: {
