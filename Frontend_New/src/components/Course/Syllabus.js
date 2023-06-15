@@ -11,11 +11,13 @@ import {
   Circle,
   HStack,
   Heading,
+  IconButton,
 } from '@chakra-ui/react';
 import { MinusIcon, AddIcon , EditIcon } from '@chakra-ui/icons';
 import QuizModal from './QuizModal';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
+import { Download } from 'tabler-icons-react';
 const Syllabus = (props) => {
   const { data, modules , ids } = props;
   const navigate = useNavigate();
@@ -49,7 +51,8 @@ const Syllabus = (props) => {
             <AccordionPanel pb={4}>
               <Accordion allowToggle>
                 {ele.videos.map(item => (
-                  <AccordionItem>
+                  <HStack>
+                  <AccordionItem w = {'90%'}>
                     <h2>
                       <AccordionButton>
                         <Box as="span" flex="1" textAlign="left">
@@ -68,6 +71,8 @@ const Syllabus = (props) => {
                       </AspectRatio>
                     </AccordionPanel>
                   </AccordionItem>
+                  <IconButton icon = {<Download/>}/>
+                  </HStack>
                 ))}
               </Accordion>
               <Center h="50px" color="white">
