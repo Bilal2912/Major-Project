@@ -73,11 +73,12 @@ exports.deleteModule = catchAsyncErrors(async (req, res, next) => {
 
 // Upload Video
 exports.uploadVideo = catchAsyncErrors(async (req, res, next) => {
-  const { title, url } = req.body;
+  const { title, url, notes } = req.body;
 
   const video = {
     title,
     url,
+    notes
   };
 
   const vidData = await Module.findOne({ _id: req.params.id });
@@ -118,11 +119,12 @@ exports.deleteVideo = catchAsyncErrors(async (req, res, next) => {
 
 // Update Video
 exports.updateVideo = catchAsyncErrors(async (req, res, next) => {
-  const { title, url, videoName } = req.body;
+  const { title, url, videoName, notes } = req.body;
 
   const video = {
     title,
     url,
+    notes
   };
 
   const module = await Module.findOne({ _id: req.params.id });
