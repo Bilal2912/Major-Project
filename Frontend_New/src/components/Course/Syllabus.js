@@ -8,248 +8,33 @@ import {
   Box,
   Button,
   Center,
+  Circle,
   HStack,
   Heading,
 } from '@chakra-ui/react';
-import { MinusIcon, AddIcon } from '@chakra-ui/icons';
+import { MinusIcon, AddIcon , EditIcon } from '@chakra-ui/icons';
 import QuizModal from './QuizModal';
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
 const Syllabus = (props) => {
-  const { modules , ids } = props;
+  const { data, modules , ids } = props;
   const navigate = useNavigate();
-  let courses = [
-    {
-      Module: 'Module 1',
-      Videos: {
-        noOfVideos: 2,
-        videoLinks: [
-          {
-            title: 'Title 1',
-            link: 'https://www.youtube.com/embed/ysz5S6PUM-U',
-          },
-          {
-            title: 'Title 2',
-            link: 'https://www.youtube.com/embed/ysz5S6PUM-U',
-          },
-        ],
-      },
-      quizdata: {
-        numberofquests: 5,
-        timelimit: 600000,
-        question: [
-          {
-            questionText: 'What is the capital of France?',
-            answerOptions: [
-              { answerText: 'New York', isCorrect: false },
-              { answerText: 'London', isCorrect: false },
-              { answerText: 'Paris', isCorrect: true },
-              { answerText: 'Dublin', isCorrect: false },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'Who is CEO of Tesla?',
-            answerOptions: [
-              { answerText: 'Jeff Bezos', isCorrect: false },
-              { answerText: 'Elon Musk', isCorrect: true },
-              { answerText: 'Bill Gates', isCorrect: false },
-              { answerText: 'Tony Stark', isCorrect: false },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'The iPhone was created by which company?',
-            answerOptions: [
-              { answerText: 'Apple', isCorrect: true },
-              { answerText: 'Intel', isCorrect: false },
-              { answerText: 'Amazon', isCorrect: false },
-              { answerText: 'Microsoft', isCorrect: false },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 1?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 2?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 3?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 4?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-          },
-          {
-            questionText: 'How many Harry Potter books are there 5?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-          },
-          {
-            questionText: 'How many Harry Potter books are there 6?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      Module: 'Module 2',
-      Videos: {
-        noOfVideos: 4,
-        videoLinks: [
-          {
-            title: 'Title 1',
-            link: 'https://www.youtube.com/embed/ysz5S6PUM-U',
-          },
-          {
-            title: 'Title 2',
-            link: 'https://www.youtube.com/embed/ysz5S6PUM-U',
-          },
-          {
-            title: 'Title 3',
-            link: 'https://www.youtube.com/embed/ysz5S6PUM-U',
-          },
-          {
-            title: 'Title 4',
-            link: 'https://www.youtube.com/embed/ysz5S6PUM-U',
-          },
-        ],
-      },
-      quizdata: {
-        numberofquests: 5,
-        timelimit: 600000,
-        question: [
-          {
-            questionText: 'What is the capital of France?',
-            answerOptions: [
-              { answerText: 'New York', isCorrect: false },
-              { answerText: 'London', isCorrect: false },
-              { answerText: 'Paris', isCorrect: true },
-              { answerText: 'Dublin', isCorrect: false },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'Who is CEO of Tesla?',
-            answerOptions: [
-              { answerText: 'Jeff Bezos', isCorrect: false },
-              { answerText: 'Elon Musk', isCorrect: true },
-              { answerText: 'Bill Gates', isCorrect: false },
-              { answerText: 'Tony Stark', isCorrect: false },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'The iPhone was created by which company?',
-            answerOptions: [
-              { answerText: 'Apple', isCorrect: true },
-              { answerText: 'Intel', isCorrect: false },
-              { answerText: 'Amazon', isCorrect: false },
-              { answerText: 'Microsoft', isCorrect: false },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 1?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 2?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 3?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-            timetaken: 0,
-          },
-          {
-            questionText: 'How many Harry Potter books are there 4?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-          },
-          {
-            questionText: 'How many Harry Potter books are there 5?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-          },
-          {
-            questionText: 'How many Harry Potter books are there 6?',
-            answerOptions: [
-              { answerText: '1', isCorrect: false },
-              { answerText: '4', isCorrect: false },
-              { answerText: '6', isCorrect: false },
-              { answerText: '7', isCorrect: true },
-            ],
-          },
-        ],
-      },
-    },
-  ];
+  var url_string = window.location;
+  var url = new URL(url_string);
+  var tvid = url.searchParams.get("id");
+  const { user } = useSelector(state => state.user);
+
   return (
     <>
     <Center>
     <Box borderRadius={'20'} bg = "#DEEDFF" w='100%'paddingBlock={'5px'}  marginRight={'10px'}>
-    <Heading size={'md'} margin = '2.5'> Course Plan</Heading>
+      <HStack justifyContent="space-between">
+      <Heading size={'md'} margin = '2.5'> Course Plan</Heading>
+       {user._id === data.user && <Circle padding={'10px'} onClick={() => {navigate(`/editcourse?id=${tvid}`)}} >
+        <EditIcon />
+       </Circle>}
+      </HStack>
+    
       <Accordion allowToggle>
         {modules.map(ele => (
           <AccordionItem >

@@ -23,7 +23,6 @@ const MyQuizzes = () => {
     const fetchData = async () => {
       const { data } = await axios.get(`/api/v1/getAllQuizDataForUser`);
       setQuizzes(data.quizData);
-      console.log(data.quizData[0].quizData);
       // axios.get('‘https://localhost:4000/api/v1/allCourses').then(response => response.json()).then(data => console.log(data)).catch(err => console.log(err));
     };
     fetchData();

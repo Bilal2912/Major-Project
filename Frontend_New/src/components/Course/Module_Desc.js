@@ -29,7 +29,6 @@ const Module_Desc = (props) => {
   const dispatch = useDispatch();
   const {data , id} = props ;
   const datetime  = new Date(data?.createdAt)
-  console.log(data)
   const enrollCourseHandler = () => {
     dispatch(enrollCourse(id));
     dispatch(enrolledCourse(id));

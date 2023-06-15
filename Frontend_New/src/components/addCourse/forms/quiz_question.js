@@ -18,18 +18,14 @@ import {
 import { useEffect, useState } from 'react';
 const Quiz_Question = props => {
   const {
-    videocount,
-    optionopen,
-    setOptionOpen,
-    question_data,
-    setQuestionData,
+    preset_data ,setPresetData, currentModule ,
     index_main,
   } = props;
-  const [question, setQuestion] = useState(question_data[index_main]);
+  const [question, setQuestion] = useState(preset_data.courses[currentModule].quizData.qna[index_main]);
   const [checkedItems, setCheckedItems] = useState([true, false, false, false]);
   const handleInputChange = (e, index, type) => {
     let data = e.target.value;
-    let temp = { ...question };
+    let temp = { ...question};
     switch (type) {
       case 'question':
         temp.question = data;
@@ -40,34 +36,35 @@ const Quiz_Question = props => {
       default:
         console.log(data);
     }
-    // console.log(index , temp.options)
     setQuestion(temp);
   };
   useEffect(() => {
-    let temp = [...question_data];
-    temp[index_main] = question;
-    setQuestionData(temp);
+    let temp = {...preset_data};
+    preset_data.courses[currentModule].quizData.qna[index_main] = question;
+    setPresetData(temp);
   }, [question]);
+  useEffect(() => {
+    setQuestion(preset_data.courses[currentModule].quizData.qna[index_main]);
+  } , [currentModule])
   const [value, setValue] = useState('1');
 
-  const changeSelect = (e , index) => {
-    let temp = [...question_data];
+  const changeSelect = (e ) => {
+    let temp = {...question};
     // console.log(temp , e);
     if (value === '1') {
-      console.log(value)
-      temp[index].qType = 'scq';
+      temp.qType = 'scq';
       //////////////////////////////// LOGIC CONFUSION
     } else {
-      temp[index].qType = 'mcq';
+      temp.qType = 'mcq';
     }
-    setQuestionData(temp);
+    setQuestion(temp);
   }
   useEffect(() => {
-    let temp = [...question_data];
+    let temp = {...question};
     checkedItems.map((ele, index) => {
-      temp[index_main].options[index].isCorrect = ele;
+      temp.options[index].isCorrect = ele;
     });
-    setQuestionData(temp);
+    setQuestion(temp);
   }, [checkedItems]);
   const changeValue = (e, index) => {
     let temp = [...checkedItems];
@@ -82,8 +79,8 @@ const Quiz_Question = props => {
             <FormLabel> Question Content </FormLabel>
             <Input
               name={'question_' + index_main}
-              input={question.question}
-              onChange={e => {
+              value={question.question}
+              onChange={(e) => {
                 handleInputChange(e, index_main, 'question');
               }}
             />
@@ -125,7 +122,7 @@ const Quiz_Question = props => {
                     <FormLabel>Option {index + 1}</FormLabel>
                     <Input
                       w={'50%'}
-                      input={ele}
+                      value={ele.content}
                       onChange={e => {
                         handleInputChange(e, index, 'option');
                       }}

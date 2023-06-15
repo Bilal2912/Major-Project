@@ -83,7 +83,6 @@ const CoursesList = (props) => {
     setPage(page - 1);
   };
   useEffect(() => {
-    console.log(courses)
     setTotalPage(Math.ceil(filteredCoursesCount / 8));
   }, [filteredCoursesCount]);
   const arr = new Array(totalPages <= 5 ? totalPages : 5);

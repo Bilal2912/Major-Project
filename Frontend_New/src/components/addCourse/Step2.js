@@ -22,83 +22,29 @@ import {
   Text,
   VStack,
   Heading,
+  IconButton,
 } from '@chakra-ui/react';
-import Module_Enter from './Module_Enter';
 import { useDispatch, useSelector } from 'react-redux';
+import Module_Edit from './Module_Enter';
+import { Plus, Trash } from "tabler-icons-react";
 const Step2 = props => {
-  const { numberofModules , payload , setPayload } = props;
+  const { numberofModules , setNumberOfModules , payload , setPayload , modules , preset_data ,setPresetData , tvid } = props;
+
   const [modulearr, setModuleArr] = useState([]);
   const [currentModule, setCurrentModule] = useState(0);
   const { isCreated , course } = useSelector((state) => state.createCourse);
-
-  let temp = [];
-  for (let i = 0; i < numberofModules; i++) {
-    let format = {
-      moduleNum: i + 1,
-      id: '',
-      moduledata: [],
-      questiondata: [],
-      numberofQuestions : 0,
-      timelimit : 120,
-      notes: ""
-    };
-    temp.push(format);
-  }
-
-  useEffect(() => {
-  if(numberofModules > 0){
-    temp = []
-    for (let i = 0; i < numberofModules; i++) {
-      let format = {
-        moduleNum: i + 1,
-        id: '',
-        moduledata: [],
-        questiondata: [],
-        numberofQuestions : 0,
-      timeLimit : 120,
-      notes : ''
-      };
-      temp.push(format);
-    }
-    setAllModules(temp);
-    temp = [];}
-  }, [numberofModules]);
-
-  const [allModules, setAllModules] = useState(temp);
-
+  const [allModules, setAllModules] = useState(preset_data.courses);
   const [moduledata, setModuleData] = useState(
     allModules[currentModule].moduledata
   );
-  useEffect(() => {
-   let data = {};
-   let arr = [];
-    allModules.map((ele , index) => {
-        let obj = {
-        name : ele.name,
-        videos : ele.moduledata ,
-        quizData :  {
-          level : 1 ,
-          qna : ele.questiondata,
-          timeLimit : ele.timelimit,
-          numberOfQuestions : ele.numberofQuestions,
-        },
-        notes : ele.notes,
-      }
-      arr.push(obj);
-    }
-    
-    )
-    data.moduleArray = arr ;
-    setPayload(data);
-  }, [allModules]);
-
+  console.log(preset_data.courses);
   return (
     <>
     <Heading paddingBottom={'10px'} size = {'sm'} >{course?.courseName}</Heading>
       <Grid templateColumns="repeat(5, 1fr)" gap={6}>
         <GridItem colSpan={1}>
           <VStack align={'stretch'}>
-            {allModules.map((ele, index) => (
+            {preset_data.courses.map((ele, index) => (
               <Box
                 as={'button'}
                 onClick={() => {
@@ -115,19 +61,55 @@ const Step2 = props => {
                 </Card>
               </Box>
             ))}
+            <Box
+                as={'button'}
+                onClick={() => {
+                  // setCurrentModule(index);
+                  // setNumberOfModules(numberofModules + 1)
+                }}
+              >
+                <Card
+                  spacing={2}
+                  variant={'elevated'}
+                >
+                  <CardBody>
+                    <IconButton borderRadius={'xl'} icon={<Plus/>} onClick={ () => {
+                      let temp = {...preset_data}
+                      let data = {
+                        quizData: {
+                            level: 1,
+                            numberOfQuestions: 1,
+                            timeLimit: 120,
+                            qna: [
+                            ]
+                        },
+                        courseId: `${tvid}`,
+                        name: `Modules ${preset_data.courses.length + 1}`,
+                        videos: [
+                        ],
+                        notes: "",
+                    }
+                    temp.courses.push(data);
+                    setPresetData(temp)
+                    }}></IconButton>
+                  </CardBody>
+                </Card>
+              </Box>
           </VStack>
         </GridItem>
 
         <GridItem colSpan={4}>
           <HStack direction={'row '} align={'stretch'}>
             <Divider size={'5px'} orientation="vertical" />
-            <Module_Enter
+            <Module_Edit
               numberofModules={numberofModules}
               allModules={allModules}
               setAllModules={setAllModules}
               currentModule={currentModule}
               moduledata={moduledata}
               setModuleData={setModuleData}
+              preset_data={preset_data}
+              setPresetData={setPresetData}
             />
           </HStack>
         </GridItem>

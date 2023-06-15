@@ -20,7 +20,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 
 const ModuleName = props => {
-  const { module_names, setModuleNames, numberofModules, currentModule } =
+  const {preset_data , setPresetData, currentModule } =
     props;
 
   return (
@@ -29,11 +29,12 @@ const ModuleName = props => {
         <FormControl>
           <Input
             type="text"
-            value={module_names[currentModule]}
-            onChange={e => {
-              let temp = [...module_names];
-              temp[currentModule] = e.target.value;
-              setModuleNames(temp);
+            value={preset_data?.courses[currentModule].name}
+            onChange={(e) => {
+              console.log(e.target.value);
+              let temp = {...preset_data};
+              temp.courses[currentModule].name = e.target.value;
+              setPresetData(temp)
             }}
             placeholder="Module Name"
           />

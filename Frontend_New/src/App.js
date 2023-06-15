@@ -16,6 +16,7 @@ import { loadUser } from "./actions/userAction";
 import { getAllCourse, getCourse } from "./actions/courseAction";
 import ProtectedRoute from './components/ProtectedRoute';
 import Profile from './components/Profile';
+import EditCourse from './components/editCourse/EditCourse';
 import MyQuizzes from './components/quizs/MyQuizzes';
 function App() {
   React.useEffect(() => {
@@ -36,7 +37,7 @@ function App() {
       <Route path = 'enrolledcourseslist' element = {<CoursesList  enrolledonly = {true} create = {false} />}/>
       <Route path = 'mycourses' element = {<CoursesList  enrolledonly = {true}  create = {true}/>}/>
       <Route path = 'addcourse' element = {<AddCourse edit = {false}  />}/>
-      <Route path = 'editcourse' element = {<AddCourse edit = {true} />}/>
+      <Route path = 'editcourse' element = {<EditCourse />}/>
       <Route path = 'profile' element = {<Profile/>}/>
       <Route path = 'myquizzes' element = {<MyQuizzes/>}/>
       </Route>

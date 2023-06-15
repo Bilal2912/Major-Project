@@ -16,6 +16,7 @@ const AddCourse = props => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const [payload, setPayload] = useState();
+  const [preset_data, setPresetData] = useState({});
   const handleTabsChange = index => {
     setTabIndex(index);
   };
@@ -24,45 +25,77 @@ const AddCourse = props => {
       navigate('/mycourses')
     }
   } , [isModuleCreated])
-  return (
-    <>
-      <SidebarWithHeader>
-      <Tabs
-        index={tabIndex}
-        onChange={handleTabsChange}
-        isFitted
-        variant="enclosed"
-        isLazy
-      >
-        <TabList mb="1em">
-          <Tab>Create Course</Tab>
-          {edit ? (
-            <Tab>Enter Module Data</Tab>
-          ) : (
+
+  useEffect(() => {
+    setNumberOfModules(1);
+    let temp  = {};
+    temp.courseName = "";
+    temp.courseDescription = "";
+    temp.courseCategory = "";
+    temp.courses = [
+      {
+        quizData: {
+          level: 1,
+          numberOfQuestions: 1,
+          timeLimit: 120,
+          qna: [
+          ]
+        },
+        name: "Module 1",
+        videos: [
+        ],
+        notes: "",
+      }
+    ]
+    setPresetData(temp);
+  } , [])
+ return (
+		<>
+			<SidebarWithHeader>
+				<Tabs
+					index={tabIndex}
+					onChange={handleTabsChange}
+					isFitted
+					variant="enclosed"
+					isLazy>
+					<TabList mb="1em">
+						<Tab>Create Course</Tab>
             <Tab isDisabled>Enter Module Data</Tab>
-          )}
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Step1
-              numberofModules={numberofModules}
-              setTabIndex={setTabIndex}
-              setNumberOfModules={setNumberOfModules}
-            />
-          </TabPanel>
-          <TabPanel>
-            <Step2 numberofModules={numberofModules} payload = {payload} setPayload = {setPayload}  />
-            <Stack align = {'end'}>
-            <Button colorScheme={'blue'} onClick = {() => {
-              dispatch(createCourseModule(payload , course._id))
-            }} >Send Module Data </Button>
-            </Stack>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      </SidebarWithHeader> 
-    </>
-  );
+					</TabList>
+					<TabPanels>
+						<TabPanel>
+							<Step1
+								numberofModules={numberofModules}
+								setTabIndex={setTabIndex}
+								setNumberOfModules={setNumberOfModules}
+								preset_data={preset_data}
+								setPresetData = {setPresetData}
+							/>
+						</TabPanel>
+						<TabPanel>
+							<Step2
+								numberofModules={numberofModules}
+								setNumberOfModules = {setNumberOfModules}
+								payload={payload}
+								setPayload={setPayload}
+								preset_data={preset_data}
+								setPresetData = {setPresetData}
+							/>
+							<Stack align={"end"}>
+								<Button
+									colorScheme={"blue"}
+									onClick={() => {
+										dispatch(createCourseModule(payload, course._id));
+									}}>
+									Send Module Data{" "}
+								</Button>
+							</Stack>
+						</TabPanel>
+					</TabPanels>
+				</Tabs>
+			</SidebarWithHeader>
+		</>
+	);
 };
 
 export default AddCourse;
