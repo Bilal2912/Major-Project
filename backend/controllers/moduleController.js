@@ -35,7 +35,6 @@ exports.createModule = catchAsyncErrors(async (req, res, next) => {
 // Get Modules Of Course
 exports.getModulesOfCourse = catchAsyncErrors(async (req, res, next) => {
   const modules = await Module.find({ courseId: req.params.id });
-
   res.status(200).json({
     success: true,
     modules,
@@ -45,12 +44,13 @@ exports.getModulesOfCourse = catchAsyncErrors(async (req, res, next) => {
 // Update Module and Quiz Data - Not Correct
 exports.updateModule = catchAsyncErrors(async (req, res, next) => {
   const module = await Module.findOne({_id: req.params.id})
+  // console.log(module)
   if (!module) {
     return next(new ErrorHandler("Module not found", 500));
   }
   const {moduleData} = req.body
 
-  const newModule = await Module.findByIdAndUpdate(req.params.id, moduleData, {
+  const newModule = await Module.findByIdAndUpdate(req.params.id,  moduleData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,

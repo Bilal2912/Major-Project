@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import SidebarWithHeader from '../../components/SideBar.jsx';
 import {createCourseModule} from '../../actions/courseAction';
 import { useNavigate } from 'react-router-dom';
+import {CREATE_COURSE_RESET } from '../../constants/courseConstants';
+
 const AddCourse = props => {
   const { edit } = props;
   const [numberofModules, setNumberOfModules] = useState(2);
@@ -24,7 +26,10 @@ const AddCourse = props => {
     if(isModuleCreated){
       navigate('/mycourses')
     }
-  } , [isModuleCreated])
+	if (isCreated){
+		dispatch({ type: CREATE_COURSE_RESET });
+	}
+  } , [isModuleCreated , isCreated , dispatch])
 
   useEffect(() => {
     setNumberOfModules(1);
@@ -85,7 +90,13 @@ const AddCourse = props => {
 								<Button
 									colorScheme={"blue"}
 									onClick={() => {
-										dispatch(createCourseModule(payload, course._id));
+										let temp = {...preset_data};
+										delete temp.courseCategory;
+										delete temp.courseCategory;
+										let modules = {
+											moduleArray : preset_data.courses,
+										}
+										dispatch(createCourseModule(modules, course._id));
 									}}>
 									Send Module Data{" "}
 								</Button>

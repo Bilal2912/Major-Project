@@ -353,9 +353,9 @@ const Module_Edit = (props) => {
 								<Textarea
 									value={ preset_data.courses[currentModule].notes !== undefined ? preset_data.courses[currentModule].notes : ""}
 									onChange={(e) => {
-										let data = [...notes];
-										data[currentModule] = e.target.value;
-										setNotes(data);
+										let data = {...preset_data};
+										data.courses[currentModule].notes = e.target.value;
+										setPresetData(data);
 									}}
 									placeholder="Enter notes url"
 									rows={1}
