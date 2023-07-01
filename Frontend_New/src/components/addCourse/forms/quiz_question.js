@@ -21,7 +21,8 @@ const Quiz_Question = (props) => {
 	};
 	useEffect(() => {
 		let temp = { ...preset_data };
-		preset_data.courses[currentModule].quizData.qna[index_main] = question;
+		temp.courses[currentModule].quizData.qna[index_main] = question;
+		temp.courses[currentModule].quizData.numberOfQuestions = temp.courses[currentModule].quizData.qna.length - 1 ;
 		setPresetData(temp);
 	}, [question]);
 	useEffect(() => {

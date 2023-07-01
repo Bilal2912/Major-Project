@@ -17,6 +17,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 const QuizWindow = props => {
   const { onClose, quizdata, shuffled , ids  } = props;
+  console.log(quizdata , shuffled );
   let courseid = ids.modules[0].courseId;
   let moduleid = ids.modules[0]._id;
   const [useranswer, setUserAnswer] = useState(
@@ -46,6 +47,7 @@ const QuizWindow = props => {
     }
    }
 
+   
   return (
     <>
       <Grid templateColumns="repeat(7, 1fr)" gap={6}>
@@ -104,13 +106,13 @@ const QuizWindow = props => {
           if (current < quizdata.numberOfQuestions - 1) {
             setCurrent(current + 1);
           }
-          if(current === quizdata.numberOfQuestions-1 ){
+          if(current === quizdata.numberOfQuestions-2 ){
             fetchData();
 
           }
         }}
       >
-       {current !== quizdata.numberOfQuestions-1 ?  "Next" : "Submit"}
+       {current !== quizdata.numberOfQuestions-2 ?  "Next" : "Submit"}
       </Button>
       </Flex>
     </>
