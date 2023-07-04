@@ -1,14 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Stack,
-  Image,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Checkbox, Flex, FormControl, FormLabel, Heading, Input ,InputRightElement, Stack, Image, Text, InputGroup } from "@chakra-ui/react";
 
 import { Link , useNavigate, useLocation } from "react-router-dom";
 import GoogleButton from './GoogleButton';
@@ -21,6 +11,8 @@ const Login = () => {
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
+  const [show, setShow] = useState(false);
+	const handleClick = () => setShow(!show);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [user, setUser] = useState({
@@ -59,9 +51,25 @@ const Login = () => {
             <Input  input = {loginEmail} onChange = {(e)=> {setLoginEmail(e.target.value)}}  type="email" />
           </FormControl>
           <FormControl id="password">
-            <FormLabel>Password</FormLabel>
-            <Input input = {loginPassword} onChange = {(e)=> {setLoginPassword(e.target.value)}}  type="password" />
-          </FormControl>
+						<FormLabel>Password</FormLabel>
+						<InputGroup>
+							<Input
+								input={loginPassword}
+								onChange={(e) => {
+									setLoginPassword(e.target.value);
+								}}
+								type={show ? "text" : "password"}
+							/>
+							<InputRightElement width="4.5rem">
+								<Button
+									h="1.75rem"
+									size="sm"
+									onClick={handleClick}>
+									{show ? "Hide" : "Show"}
+								</Button>
+							</InputRightElement>
+						</InputGroup>
+					</FormControl>
           <Stack spacing={6}>
             <Stack
               direction={{ base: 'column', sm: 'row' }}
@@ -71,6 +79,8 @@ const Login = () => {
               <Checkbox>Remember me</Checkbox>
               <Link color={'blue.500'}>Forgot password?</Link>
             </Stack>
+            <Stack>
+              <Box>
             <Link to="/">
               <>
                 <Button onClick = {(e) => {loginSubmit(e)}} colorScheme={'blue'} width={'100%'} variant={'solid'}>
@@ -78,7 +88,12 @@ const Login = () => {
                 </Button>
               </>
             </Link>
+            </Box>
+            <Center>
+            <Text>  <Link to = "/signup"> Create New Account?</Link></Text>
+            </Center>
             {/* <GoogleButton></GoogleButton> */}
+            </Stack>
           </Stack>
         </Stack>
       </Flex>
